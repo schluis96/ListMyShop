@@ -1,4 +1,3 @@
-/* CUERPO DE LA PÁGINA */
 body {
   font-family: sans-serif;
   background-color: #f7f7f7;
@@ -9,7 +8,6 @@ body {
   text-align: center;
 }
 
-/* TÍTULO PRINCIPAL */
 h1 {
   text-align: center;
   color: #333;
@@ -17,7 +15,6 @@ h1 {
   font-size: 2rem;
 }
 
-/* SUBTÍTULOS DE LISTAS */
 h2 {
   display: flex;
   align-items: center;
@@ -29,7 +26,6 @@ h2 {
   padding-bottom: 0.3rem;
 }
 
-/* FORMULARIO */
 form {
   display: flex;
   gap: 1rem;
@@ -59,7 +55,6 @@ button:hover {
   background-color: #1e5cb3;
 }
 
-/* LISTAS */
 ul {
   list-style: none;
   padding: 0;
@@ -67,7 +62,6 @@ ul {
   counter-reset: item;
 }
 
-/* ELEMENTOS DE LA LISTA */
 li {
   background: white;
   padding: 0.35rem 0.6rem;
@@ -82,26 +76,22 @@ li {
   line-height: 1.2rem;
 }
 
-/* EFECTO FLOTANTE AL PASAR EL RATÓN */
 li:hover {
   transform: scale(1.02);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   border-color: #2d89ef;
 }
 
-/* ELEMENTOS MARCADOS COMO COMPRADOS */
 .comprado {
   text-decoration: line-through;
   color: #888;
 }
 
-/* CHECK ✔️ ANTES DEL TEXTO COMPRADO */
 .comprado::before {
   content: "✔️ ";
   margin-right: 0.5rem;
 }
 
-/* CÍRCULO NUMERADO ANTES DE CADA ELEMENTO */
 li::before {
   content: counter(item);
   counter-increment: item;
@@ -118,7 +108,44 @@ li::before {
   font-weight: bold;
 }
 
-/* RESPONSIVE */
+.acciones-globales {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.acciones-globales button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+#marcar-todos {
+  background-color: #4caf50;
+}
+
+.acciones-globales button:hover {
+  opacity: 0.9;
+}
+
+.boton-borrar {
+  float: right;
+  margin-left: 1rem;
+  background: none;
+  border: none;
+  color: #f44336;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Responsive */
 @media (max-width: 600px) {
   body {
     padding: 1rem;
