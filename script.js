@@ -42,6 +42,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const li = document.createElement('li');
     li.dataset.text = texto;
     li.dataset.id = id;
+    li.style.display = 'flex';
+    li.style.alignItems = 'center';
+    li.style.justifyContent = 'space-between';
+
+    const contentDiv = document.createElement('div');
+    contentDiv.style.display = 'flex';
+    contentDiv.style.alignItems = 'center';
+    contentDiv.style.gap = '0.5rem';
+    contentDiv.style.flex = '1';
 
     const spanTexto = document.createElement('span');
     spanTexto.textContent = texto;
@@ -60,7 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.textContent = sel ? '✔️' : btn.dataset.index;
         li.classList.toggle('selected', sel);
       });
-      li.appendChild(btn);
+      contentDiv.appendChild(btn);
+      contentDiv.appendChild(spanTexto);
 
       // ✏️ botón editar
       const editBtn = document.createElement('button');
@@ -71,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         editarTexto(spanTexto, id);
       });
 
-      li.appendChild(spanTexto);
+      li.appendChild(contentDiv);
       li.appendChild(editBtn);
       lista.appendChild(li);
     } else {
