@@ -43,6 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
     li.dataset.text = texto;
     li.dataset.id = id;
 
+    const spanTexto = document.createElement('span');
+    spanTexto.textContent = texto;
+    spanTexto.classList.add('texto-item');
+
     if (!comprado) {
       const btn = document.createElement('button');
       btn.type = 'button';
@@ -57,11 +61,23 @@ document.addEventListener('DOMContentLoaded', () => {
         li.classList.toggle('selected', sel);
       });
       li.appendChild(btn);
-      li.appendChild(document.createTextNode(texto));
+
+      // ✏️ botón editar
+      const editBtn = document.createElement('button');
+      editBtn.textContent = '✏️';
+      editBtn.classList.add('edit-btn');
+      editBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        editarTexto(spanTexto, id);
+      });
+
+      li.appendChild(spanTexto);
+      li.appendChild(editBtn);
       lista.appendChild(li);
     } else {
-      li.textContent = texto;
-      li.classList.add('comprado');
+      spanTexto.classList.add('comprado');
+      li.appendChild(spanTexto);
+
       const borrarBtn = document.createElement('button');
       borrarBtn.classList.add('boton-borrar');
       borrarBtn.textContent = '🗑';
@@ -83,6 +99,42 @@ document.addEventListener('DOMContentLoaded', () => {
         guardar();
       }
     });
+
+    spanTexto.addEventListener('dblclick', e => {
+      e.stopPropagation();
+      editarTexto(spanTexto, id);
+    });
+  }
+
+  function editarTexto(span, id) {
+    const inputEdit = document.createElement('input');
+    inputEdit.type = 'text';
+    inputEdit.value = span.textContent;
+    inputEdit.classList.add('input-edit');
+
+    span.replaceWith(inputEdit);
+    inputEdit.focus();
+
+    inputEdit.addEventListener('blur', () => terminarEdicion(inputEdit, id));
+    inputEdit.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        terminarEdicion(inputEdit, id);
+      }
+    });
+  }
+
+  function terminarEdicion(inputEdit, id) {
+    const nuevoTexto = inputEdit.value.trim();
+    if (nuevoTexto) {
+      const item = items.find(it => it.id === id);
+      if (item) {
+        item.texto = nuevoTexto;
+        guardar();
+        renderList();
+      }
+    } else {
+      renderList();
+    }
   }
 
   renderList();
