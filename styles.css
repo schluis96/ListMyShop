@@ -72,6 +72,34 @@ li:hover {
   border-color: #2d89ef;
 }
 
+/* Botón de selección concurrido al posición */
+.select-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-right: 0.6rem;
+  background-color: #ddd;
+  color: #333;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 50%;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.select-btn:hover {
+  background-color: #ccc;
+}
+
+.select-btn.selected {
+  background-color: #4caf50;
+  color: white;
+}
+
 .comprado {
   text-decoration: line-through;
   color: #888;
@@ -80,22 +108,6 @@ li:hover {
 .comprado::before {
   content: "✔️ ";
   margin-right: 0.5rem;
-}
-
-li::before {
-  content: counter(item);
-  counter-increment: item;
-  display: inline-block;
-  width: 1.4rem;
-  height: 1.4rem;
-  margin-right: 0.6rem;
-  background-color: #2d89ef;
-  color: white;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 1.4rem;
-  font-size: 0.8rem;
-  font-weight: bold;
 }
 
 /* ===== Bloques y Títulos Desplegables ===== */
@@ -143,33 +155,31 @@ li::before {
   min-width: 150px;
 }
 
-/* Botones del menú con sus colores originales */
+.menu-dropdown.visible {
+  display: block;
+}
+
+/* Restaurar colores de los botones de menú */
 #marcar-seleccionados {
-  background-color: #2d89ef; /* azul */
+  background-color: #2d89ef;
   color: white;
   border-radius: 4px;
   margin-bottom: 0.25rem;
 }
 
 #marcar-todos {
-  background-color: #4caf50; /* verde */
+  background-color: #4caf50;
   color: white;
   border-radius: 4px;
   margin-bottom: 0.25rem;
 }
 
 #borrar-comprados {
-  background-color: #f44336; /* rojo */
+  background-color: #f44336;
   color: white;
   border-radius: 4px;
 }
 
-/* Mostrar solo cuando se añade la clase .visible */
-.menu-dropdown.visible {
-  display: block;
-}
-
-/* Opcional: hover sobre las opciones */
 .menu-dropdown button:hover {
   opacity: 0.9;
 }
@@ -199,7 +209,7 @@ li::before {
     font-size: 1rem;
     padding: 0.6rem 0.75rem;
   }
-  li::before {
+  .select-btn {
     width: 1.6rem;
     height: 1.6rem;
     line-height: 1.6rem;

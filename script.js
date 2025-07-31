@@ -1,4 +1,4 @@
-// Mostrar/ocultar menú desplegable
+// Menús desplegables
 function toggleMenu(id) {
   document.querySelectorAll('.menu-dropdown').forEach(menu => {
     if (menu.id !== id) menu.classList.remove('visible');
@@ -6,119 +6,122 @@ function toggleMenu(id) {
   document.getElementById(id).classList.toggle('visible');
 }
 
-// Delegación de clic para menú y cierre al clic fuera
-document.addEventListener('click', (e) => {
+document.addEventListener('click', e => {
   const toggle = e.target.closest('.menu-toggle');
   if (toggle) {
-    const menuId = toggle.getAttribute('data-menu');
-    toggleMenu(menuId);
+    toggleMenu(toggle.dataset.menu);
   } else {
-    document.querySelectorAll('.menu-dropdown').forEach(menu => {
-      menu.classList.remove('visible');
-    });
+    document.querySelectorAll('.menu-dropdown').forEach(menu => menu.classList.remove('visible'));
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const formulario = document.getElementById("formulario");
-  const input = document.getElementById("producto");
-  const lista = document.getElementById("lista");
-  const comprados = document.getElementById("comprados");
-  const btnBorrarComprados = document.getElementById("borrar-comprados");
-  const btnMarcarTodos = document.getElementById("marcar-todos");
-  const btnMarcarSel = document.getElementById("marcar-seleccionados");
+document.addEventListener('DOMContentLoaded', () => {
+  const formulario = document.getElementById('formulario');
+  const input = document.getElementById('producto');
+  const lista = document.getElementById('lista');
+  const comprados = document.getElementById('comprados');
+  const btnBorrarComprados = document.getElementById('borrar-comprados');
+  const btnMarcarTodos = document.getElementById('marcar-todos');
+  const btnMarcarSel = document.getElementById('marcar-seleccionados');
 
-  const pendientes = JSON.parse(localStorage.getItem("pendientes")) || [];
-  const hechos = JSON.parse(localStorage.getItem("comprados")) || [];
+  let items = JSON.parse(localStorage.getItem('items')) || [];
 
   function guardar() {
-    const pend = Array.from(lista.children).map(li => li.dataset.text);
-    const comp = Array.from(comprados.children).map(li => li.dataset.text);
-    localStorage.setItem("pendientes", JSON.stringify(pend));
-    localStorage.setItem("comprados", JSON.stringify(comp));
+    localStorage.setItem('items', JSON.stringify(items));
   }
 
-  function crearElemento(texto, comprado = false) {
-    const li = document.createElement("li");
-    li.textContent = texto;
-    li.dataset.text = texto;
+  function renderList() {
+    lista.innerHTML = '';
+    comprados.innerHTML = '';
+    items.forEach(item => {
+      crearElemento(item);
+    });
+  }
 
-    if (comprado) {
-      li.classList.add("comprado");
-      const borrarBtn = document.createElement("button");
-      borrarBtn.classList.add("boton-borrar");
-      borrarBtn.textContent = "🗑";
-      borrarBtn.addEventListener("click", e => {
+  function crearElemento({ id, texto, comprado }) {
+    const li = document.createElement('li');
+    li.dataset.text = texto;
+    li.dataset.id = id;
+
+    if (!comprado) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.classList.add('select-btn');
+      const idx = id;
+      btn.textContent = idx;
+      btn.dataset.index = idx;
+      btn.addEventListener('click', e => {
         e.stopPropagation();
-        comprados.removeChild(li);
+        const sel = btn.classList.toggle('selected');
+        btn.textContent = sel ? '✔️' : btn.dataset.index;
+        li.classList.toggle('selected', sel);
+      });
+      li.appendChild(btn);
+      li.appendChild(document.createTextNode(texto));
+      lista.appendChild(li);
+    } else {
+      li.textContent = texto;
+      li.classList.add('comprado');
+      const borrarBtn = document.createElement('button');
+      borrarBtn.classList.add('boton-borrar');
+      borrarBtn.textContent = '🗑';
+      borrarBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        items = items.filter(it => it.id !== id);
+        renderList();
         guardar();
       });
       li.appendChild(borrarBtn);
       comprados.appendChild(li);
-    } else {
-      // checkbox para selección múltiple
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.classList.add("sel-checkbox");
-      li.prepend(checkbox);
-      lista.appendChild(li);
     }
 
-    li.addEventListener("click", () => {
-      if (li.classList.contains("comprado")) {
-        li.classList.remove("comprado");
-        const btn = li.querySelector(".boton-borrar");
-        if (btn) btn.remove();
-        comprados.removeChild(li);
-        lista.appendChild(li);
-      } else {
-        li.classList.add("comprado");
-        const borrarBtn = document.createElement("button");
-        borrarBtn.classList.add("boton-borrar");
-        borrarBtn.textContent = "🗑";
-        borrarBtn.addEventListener("click", e => {
-          e.stopPropagation();
-          comprados.removeChild(li);
-          guardar();
-        });
-        li.appendChild(borrarBtn);
-        lista.removeChild(li);
-        comprados.appendChild(li);
+    li.addEventListener('click', () => {
+      const item = items.find(it => it.id === id);
+      if (item) {
+        item.comprado = !item.comprado;
+        renderList();
+        guardar();
       }
-      guardar();
     });
   }
 
-  pendientes.forEach(item => crearElemento(item, false));
-  hechos.forEach(item => crearElemento(item, true));
+  renderList();
 
-  formulario.addEventListener("submit", e => {
+  formulario.addEventListener('submit', e => {
     e.preventDefault();
     const texto = input.value.trim();
     if (texto) {
-      crearElemento(texto, false);
-      input.value = "";
+      const maxId = items.length ? Math.max(...items.map(it => it.id)) : 0;
+      const nuevo = { id: maxId + 1, texto, comprado: false };
+      items.push(nuevo);
+      renderList();
       guardar();
+      input.value = '';
     }
   });
 
-  btnBorrarComprados.addEventListener("click", () => {
-    comprados.innerHTML = "";
+  btnBorrarComprados.addEventListener('click', () => {
+    items = items.filter(it => !it.comprado);
+    renderList();
     guardar();
   });
 
-  btnMarcarTodos.addEventListener("click", () => {
-    Array.from(lista.children).forEach(li => {
-      if (!li.classList.contains("comprado")) li.click();
+  btnMarcarTodos.addEventListener('click', () => {
+    items.forEach(it => {
+      if (!it.comprado) it.comprado = true;
     });
+    renderList();
     guardar();
   });
 
-  btnMarcarSel.addEventListener("click", () => {
-    Array.from(lista.querySelectorAll("li")).forEach(li => {
-      const cb = li.querySelector(".sel-checkbox");
-      if (cb && cb.checked && !li.classList.contains("comprado")) li.click();
+  btnMarcarSel.addEventListener('click', () => {
+    const seleccionados = Array.from(lista.querySelectorAll('li.selected'));
+    seleccionados.forEach(li => {
+      const id = parseInt(li.dataset.id);
+      const item = items.find(it => it.id === id);
+      if (item) item.comprado = true;
     });
+    renderList();
     guardar();
   });
 });
