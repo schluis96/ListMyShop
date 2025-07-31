@@ -24,6 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnMarcarTodos = document.getElementById('marcar-todos');
   const btnMarcarSel = document.getElementById('marcar-seleccionados');
 
+  const ordenarBtn = document.createElement('button');
+  ordenarBtn.id = 'ordenar-btn';
+  ordenarBtn.innerHTML = '🔢';
+  ordenarBtn.title = 'Ordenar: por defecto';
+  document.querySelector('.bloque-lista').prepend(ordenarBtn);
+
+  let ordenAlfabetico = false;
   let items = JSON.parse(localStorage.getItem('items')) || [];
 
   function guardar() {
@@ -33,7 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderList() {
     lista.innerHTML = '';
     comprados.innerHTML = '';
-    items.forEach(item => {
+
+    const ordenados = [...items];
+    if (ordenAlfabetico) {
+      ordenados.sort((a, b) => a.texto.localeCompare(b.texto));
+    } else {
+      ordenados.sort((a, b) => a.id - b.id);
+    }
+
+    ordenados.forEach(item => {
       crearElemento(item);
     });
   }
@@ -72,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
       contentDiv.appendChild(btn);
       contentDiv.appendChild(spanTexto);
 
-      // ✏️ botón editar
       const editBtn = document.createElement('button');
       editBtn.textContent = '✏️';
       editBtn.classList.add('edit-btn');
@@ -146,6 +160,13 @@ document.addEventListener('DOMContentLoaded', () => {
       renderList();
     }
   }
+
+  ordenarBtn.addEventListener('click', () => {
+    ordenAlfabetico = !ordenAlfabetico;
+    ordenarBtn.innerHTML = ordenAlfabetico ? '🔤' : '🔢';
+    ordenarBtn.title = ordenAlfabetico ? 'Ordenar: alfabéticamente' : 'Ordenar: por defecto';
+    renderList();
+  });
 
   renderList();
 
