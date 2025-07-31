@@ -1,3 +1,4 @@
+/* ===== Estilos Base ===== */
 body {
   font-family: sans-serif;
   background-color: #f7f7f7;
@@ -13,17 +14,6 @@ h1 {
   color: #333;
   margin-bottom: 2rem;
   font-size: 2rem;
-}
-
-h2 {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #444;
-  margin-top: 2rem;
-  font-size: 1.3rem;
-  border-bottom: 2px solid #ddd;
-  padding-bottom: 0.3rem;
 }
 
 form {
@@ -55,6 +45,7 @@ button:hover {
   background-color: #1e5cb3;
 }
 
+/* ===== Listas ===== */
 ul {
   list-style: none;
   padding: 0;
@@ -72,7 +63,6 @@ li {
   position: relative;
   cursor: pointer;
   font-size: 0.9rem;
-  text-align: left;
   line-height: 1.2rem;
 }
 
@@ -108,79 +98,107 @@ li::before {
   font-weight: bold;
 }
 
-.acciones-globales {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  flex-wrap: wrap;
+/* ===== Bloques y Títulos Desplegables ===== */
+.bloque-lista {
+  margin-bottom: 1.5rem;
 }
 
-.acciones-globales button {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+.titulo-plegable {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid #ddd;
+}
+
+.titulo-plegable h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 1.3rem;
+  color: #444;
+}
+
+.menu-toggle {
   cursor: pointer;
-  font-weight: bold;
-  font-size: 0.9rem;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 0.2rem;
+  user-select: none;
+  margin-left: 0.5rem;
+}
+
+.menu-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  z-index: 100;
+  min-width: 150px;
+}
+
+/* Botones del menú con sus colores originales */
+#marcar-seleccionados {
+  background-color: #2d89ef; /* azul */
+  color: white;
+  border-radius: 4px;
+  margin-bottom: 0.25rem;
 }
 
 #marcar-todos {
-  background-color: #4caf50;
+  background-color: #4caf50; /* verde */
+  color: white;
+  border-radius: 4px;
+  margin-bottom: 0.25rem;
 }
 
-.acciones-globales button:hover {
+#borrar-comprados {
+  background-color: #f44336; /* rojo */
+  color: white;
+  border-radius: 4px;
+}
+
+/* Mostrar solo cuando se añade la clase .visible */
+.menu-dropdown.visible {
+  display: block;
+}
+
+/* Opcional: hover sobre las opciones */
+.menu-dropdown button:hover {
   opacity: 0.9;
 }
 
-.boton-borrar {
-  float: right;
-  margin-left: 1rem;
-  background: none;
-  border: none;
-  color: #f44336;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-/* Responsive */
+/* ===== Responsivo ===== */
 @media (max-width: 600px) {
   body {
     padding: 1rem;
     font-size: 1.05rem;
   }
-
   h1 {
     font-size: 1.6rem;
   }
-
-  h2 {
+  .titulo-plegable h2 {
     font-size: 1.2rem;
   }
-
   form {
     flex-direction: column;
     gap: 0.75rem;
   }
-
-  input[type="text"] {
+  input[type="text"], button {
     width: 100%;
     max-width: none;
     font-size: 1.05rem;
   }
-
-  button {
-    width: 100%;
-    font-size: 1.05rem;
-  }
-
   li {
     font-size: 1rem;
     padding: 0.6rem 0.75rem;
   }
-
   li::before {
     width: 1.6rem;
     height: 1.6rem;

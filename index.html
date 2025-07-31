@@ -1,3 +1,4 @@
+<!-- index.html con todo el script en script.js -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,16 +15,28 @@
     <button type="submit">Añadir</button>
   </form>
 
-  <div class="acciones-globales">
-    <button id="marcar-todos">✅ Marcar todos como comprados</button>
-    <button id="borrar-comprados">🗑️ Eliminar todos los comprados</button>
+  <div class="bloque-lista">
+    <div class="titulo-plegable">
+      <h2>📝 Productos pendientes</h2>
+      <div class="menu-toggle" data-menu="pendientes-menu">⋮</div>
+      <div id="pendientes-menu" class="menu-dropdown">
+        <button id="marcar-seleccionados">✅ Marcar seleccionados</button>
+        <button id="marcar-todos">✅ Marcar todos</button>
+      </div>
+    </div>
+    <ul id="lista"></ul>
   </div>
 
-  <h2>📝 Productos pendientes</h2>
-  <ul id="lista"></ul>
-
-  <h2>✅ Productos comprados</h2>
-  <ul id="comprados"></ul>
+  <div class="bloque-lista">
+    <div class="titulo-plegable">
+      <h2>✅ Productos comprados</h2>
+      <div class="menu-toggle" data-menu="comprados-menu">⋮</div>
+      <div id="comprados-menu" class="menu-dropdown">
+        <button id="borrar-comprados">🗑️ Eliminar todos</button>
+      </div>
+    </div>
+    <ul id="comprados"></ul>
+  </div>
 
   <script src="script.js"></script>
 </body>
