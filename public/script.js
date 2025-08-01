@@ -1,3 +1,7 @@
+// Firebase configuration
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 // Menús desplegables
 function toggleMenu(id) {
   document.querySelectorAll('.menu-dropdown').forEach(menu => {
@@ -10,8 +14,7 @@ document.addEventListener('click', e => {
   const toggle = e.target.closest('.menu-toggle');
   if (toggle) {
     toggleMenu(toggle.dataset.menu);
-  } else {
-    document.querySelectorAll('.menu-dropdown').forEach(menu => menu.classList.remove('visible'));
+  } else { aach(menu => menu.classList.remove('visible'));
   }
 });
 
